@@ -1,0 +1,62 @@
+<div class="container">
+    <h2>Details</h2>
+    <form [formGroup]="reactiveform" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" formControlName="name" placeholder="Enter Name" name="name">
+      </div>
+      <div *ngIf="reactiveform.get('name').invalid && (reactiveform.get('name').dirty || reactiveform.get('name').touched)" class="alert alert-danger">
+        <div *ngIf="reactiveform.get('name').errors.required">
+          name is required
+        </div>
+        <div *ngIf="reactiveform.get('name').errors.checkname">
+          Numbers Not allowed
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" class="form-control" id="email" formControlName="email" placeholder="Enter Email" name="email"  >
+      </div>
+      
+      <div class="custom-file">
+        <label class="custom-file-label" for="upload">Choose file</label>
+        <input type="file" class="custom-file-input" id="upload" name="upload" #imageinput multiple accept="image/*" (change)="fileProgress(imageinput)">
+      </div>
+
+
+
+
+      <div class="education">
+  
+        <div class="form-group" formArrayName="education">
+                <button type="button" (click)="addeducation()" class="btn btn-dark">Add</button>
+            <div *ngFor="let item of education.controls; let i = index"  [formGroupName] ="i">
+          <label for="education">Education:</label>
+         <select class="form-control" formControlName="branch">
+                <option [ngValue]="null">Choose...</option>
+           <option *ngFor = "let edu of educationdet" [value]=edu>{{edu}}</option>
+         </select>
+
+         <div class="form-group">
+            <label for="iname">Institute Name:</label>
+            <input type="text" class="form-control" formControlName="iname" id="iname" placeholder="Enter Institute Name" name="iname">
+          </div>
+          <div class="form-group">
+            <label for="marks">Marks:</label>
+            <input type="text" class="form-control" formControlName="marks" id="marks" placeholder="Enter Marks" name="marks">
+          </div>
+          <button type="button" (click)="deleteedu(i)" class="btn btn-danger">Remove</button>
+        </div>
+    </div>
+      </div>
+       <button type="submit" class="btn btn-success" >Submit</button>
+       <button type="submit" class="btn btn-warning" (click)="reactiveform.reset()">Reset</button>
+    </form>
+  </div>
+  <form #total = "ngForm">
+      <input type="text" class="form-control" #v="ngModel" [(ngModel)]="marks"  id="marks" placeholder="Enter Marks" name="marks" [appCheckname]="'siva'">
+      <div *ngIf="v.errors?.ckeckName" class="alert alert-danger">
+                Entered Name is not allowed
+        </div>
+    </form>
